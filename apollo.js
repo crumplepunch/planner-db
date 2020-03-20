@@ -19,8 +19,9 @@ type Query {
 }
 
 type Project{
-  _id: String,
-  name: String,
+  _id: String
+  name: String
+  description: String
 }
 `
 
