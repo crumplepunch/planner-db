@@ -28,12 +28,25 @@ type Vertical {
   completions: [Completion]
 }
 
+type Plan {
+  status: Int
+  name: String
+  spec: String 
+}
+
+type Plans {
+  infrastructure: [Plan]
+  design: [Plan]
+  release:  [Plan]
+}
+
 type Project{
   _id: String
   name: String
   description: String
   design: Vertical
   development: Vertical
+  plans: Plans
 }
 `
 
