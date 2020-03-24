@@ -15,21 +15,30 @@ client.connect(err => {
 const typeDefs = gql`
 type Query {
   projects:[Project]
-  hello: String
+}
+
+type Completion {
+  message: String
+  date: String
+}
+
+type Vertical {
+  lead: String
+  stack: [String]
+  completions: [Completion]
 }
 
 type Project{
   _id: String
   name: String
   description: String
+  design: Vertical
+  development: Vertical
 }
 `
 
 const resolvers = {
   Query: {
-    hello: () => {
-      return `hey sup ? `
-    },
     projects: async () => {
       const values = await db.collection('projects').find().toArray().then(res => { return res })
       console.log({ values })
