@@ -1,4 +1,5 @@
 const { ApolloServer, gql } = require('apollo-server')
+const { ObjectId } = require('mongodb')
 require('dotenv').config()
 const assert = require('assert')
 
@@ -15,6 +16,7 @@ client.connect(err => {
 const typeDefs = gql`
 type Query {
   projects:[Project]
+  project(id: ID!): Project
 }
 
 type Completion {
@@ -56,6 +58,10 @@ const resolvers = {
       const values = await db.collection('projects').find().toArray().then(res => { return res })
       console.log({ values })
       return values
+    },
+    project: async (_, { id }) => {
+      const doc = await db.collection('projects').findOne({ '_id': ObjectId(id) })
+      return doc
     }
   }
 }
