@@ -16,7 +16,7 @@ client.connect(err => {
 const typeDefs = gql`
 type Query {
   projects:[Project]
-  project(id: ID!): Project
+  project(id: ID, name: String): Project
 }
 
 type Completion {
@@ -59,8 +59,16 @@ const resolvers = {
       console.log({ values })
       return values
     },
-    project: async (_, { id }) => {
-      const doc = await db.collection('projects').findOne({ '_id': ObjectId(id) })
+    project: async (_, { id, name }) => {
+      const query = {}
+      id && (query._id = ObjectId(id))
+      name && (query.name = { $regex: `^${name}$`, $options: 'i' })
+
+      const doc = await db.collection('projects').findOne(query)
+      console.log({
+        query,
+        doc
+      })
       return doc
     }
   }
