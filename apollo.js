@@ -79,4 +79,4 @@ const server = new ApolloServer({
   resolvers
 })
 
-server.listen(4000).then(({ url }) => console.log(`Server running at ${url} `))
+server.listen(4000).then(({ url }) => console.log(`Server running at ${url}`))
