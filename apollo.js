@@ -15,7 +15,7 @@ client.connect(err => {
 
 const typeDefs = gql`
 type Query {
-  projects:[Project]
+  projects(sortField: String, direction: Int):[Project]
   project(id: ID, name: String): Project
 }
 
@@ -54,8 +54,12 @@ type Project{
 
 const resolvers = {
   Query: {
-    projects: async () => {
-      const values = await db.collection('projects').find().toArray().then(res => { return res })
+    projects: async (_, { sortField, direction }) => {
+      const sort = {}
+      sortField && (sort[sortField] = 1)
+      direction && (sort[sortField] = direction)
+
+      const values = await db.collection('projects').find().sort(sort).toArray().then(res => { return res })
       console.log({ values })
       return values
     },
