@@ -30,22 +30,29 @@ type Vertical {
   completions: [Completion]
 }
 
+type Cost {
+  time: Int
+  money: Int
+}
+
 type Plan {
-  status: Int
-  name: String
-  spec: String 
+  cost: Cost
+  tasks: [String]
 }
 
 type Plans {
-  infrastructure: [Plan]
-  design: [Plan]
-  release:  [Plan]
+  infrastructure: Plan
+  design: Plan
+  release:  Plan
+  research: Plan
+  build: Plan
 }
 
 type Project{
   _id: String
   name: String
   description: String
+  summary: String
   design: Vertical
   development: Vertical
   plans: Plans
@@ -60,7 +67,7 @@ const resolvers = {
       direction && (sort[sortField] = direction)
 
       const values = await db.collection('projects').find().sort(sort).toArray().then(res => { return res })
-      console.log({ values })
+      console.log(values)
       return values
     },
     project: async (_, { id, name }) => {
