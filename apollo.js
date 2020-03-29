@@ -17,6 +17,21 @@ const typeDefs = gql`
 type Query {
   projects(sortField: String, direction: Int):[Project]
   project(id: ID, name: String): Project
+  updatedProjects(interval: Interval, sort: Sort): Project
+  started: [Project]
+  unstarted: [Project]
+}
+
+type Interval {
+  from: double!
+  to: double!
+  inclusive: Boolean
+  sort: Sort
+}
+
+type Sort {
+  field: String
+  direction: Int
 }
 
 type Completion {
@@ -81,6 +96,17 @@ const resolvers = {
         doc
       })
       return doc
+    },
+    updatedProjects: async (_, { interval, sort = { field: 'updated', direction: -1}}) => {
+      console.log(`Calling updatedProjects`)
+      const { from , to } = interval
+
+      if (from >= to) console.log('absolutely not') return []
+
+
+      const docs = await db.collection('projects').find({ updated: { $gt: interval.from, $lt: interval.to }}).sort(sort)
+      console.log(docs)
+      return docs
     }
   }
 }
