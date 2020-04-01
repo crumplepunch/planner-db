@@ -3,17 +3,13 @@ module.exports = gql`
 type Query {
   projects(sortField: String, direction: Int):[Project]
   project(id: ID, name: String): Project
+  logs: [Log]
 }
 
-type Completion {
-  message: String
-  date: String
-}
-
-type Vertical {
-  lead: String
-  stack: [String]
-  completions: [Completion]
+type Log {
+  markdown: String
+  project: String 
+  _id: String
 }
 
 type Cost {
@@ -39,8 +35,7 @@ type Project{
   name: String
   description: String
   summary: String
-  design: Vertical
-  development: Vertical
   plans: Plans
+  logs: [Log]
 }
 `
