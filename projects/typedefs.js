@@ -9,6 +9,8 @@ type Query {
 type Log {
   markdown: String
   project: String 
+  name: String
+  date: String
   _id: String
 }
 
