@@ -30,6 +30,7 @@ module.exports = {
     },
     project: async (_, { id, name }) => {
       const query = {}
+      console.log(id)
       id && (query._id = ObjectId(id))
       name && (query.name = { $regex: `^${name}$`, $options: 'i' })
 
@@ -38,6 +39,21 @@ module.exports = {
     },
     logs: async (_, { }) => {
       const doc = await db.collection('project-logs').find().toArray()
+      return doc
+    }
+  },
+  Mutation: {
+    addProject: async (_, project) => {
+      console.log({ project })
+
+      const { insertedId } = await db.collection('projects').insertOne(project)
+      console.log({ project })
+      const doc = await db.collection('projects').findOne({ _id: ObjectId(insertedId) })
+      console.log({
+        input: project,
+        doc
+      })
+
       return doc
     }
   }

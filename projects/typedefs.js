@@ -6,6 +6,10 @@ type Query {
   logs: [Log]
 }
 
+type Mutation {
+  addProject(name: String, description: String): Project
+}
+
 type Log {
   markdown: String
   project: String 
