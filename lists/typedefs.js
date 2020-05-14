@@ -1,6 +1,6 @@
 const { gql } = require('apollo-server')
 module.exports = gql`
- type Query {
+ extend type Query {
   list(id: ID): List
   lists: [List]
 }
@@ -17,7 +17,7 @@ type List {
   todos: [ToDo]
 }
 
-type Mutation {
+extend type Mutation {
   updateListToDos(id: ID, todos: [ToDoInput]): List
   addList(list: ListInput): List
   deleteList(id: ID!): Boolean
